@@ -1,0 +1,204 @@
+*{
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: rosybrown;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+}
+
+h2, h3, p, a{
+    color: rgb(255, 255, 255);
+}
+
+a{
+    font-size: large;
+    margin-top: 18px; /* FIX: was missing unit */
+}
+
+@media (max-width: 700px) {
+    .image-container img {
+        width: 100%;
+        max-width: 535px;
+    }
+}
+
+.title-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    pointer-events: none;
+}
+
+.front_word {
+    color: rgb(255, 255, 255);
+    font-size: 7.5vw;
+    margin: 0;
+    padding: 0;
+}
+
+.shadow {
+    color: rgb(0, 0, 0);
+    font-size: 7.5vw;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 1px;
+    left: 49.5%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: -1;
+}
+
+.buttons{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    font-size: 15px;
+    vertical-align: text-top;
+}
+
+.right{
+    margin-right: auto;
+    display: flex;
+    gap: 15px;
+}
+
+.video-background {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+}
+
+.bg-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto; /* FIX: was fixed 610px, now scales with container */
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    object-fit: cover;
+}
+
+.background{
+    z-index: -1; /* FIX: was -1px, invalid unit for z-index */
+}
+
+.GetToKnowMe{
+    width: auto;
+    height: 668px;
+    max-width: 100%; /* ADD: prevents overflow on small screens */
+}
+
+.carousel-container {
+    width: 640px;
+    max-width: 100%; /* ADD: shrinks on narrow viewports instead of overflowing */
+    height: 490px;
+    margin: 0 auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.carousel-container::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-slide {
+    display: flex;
+}
+
+.slide {
+    flex: 0 0 100%;
+    width: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+.secondvideo{
+    width: 668px; /* FIX: was missing unit */
+    max-width: 100%; /* ADD: keeps it from overflowing small screens */
+    height: auto;
+}
+
+.slide img,
+.slide video {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.image-container {
+  display: flex;            /* Turns the container into a horizontal flexbox */
+  justify-content: center;  /* Centers images horizontally (can also use space-between) */
+  gap: -100px;
+}
+
+.image-container img {
+  width: 33%;             /* Forces consistent size for all images */
+  height: auto;             /* Maintains aspect ratio */
+}
+
+
+/* Animation */
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition-group(root){
+    animation-duration: 1s;
+    animation-timing-function: ease;
+}
+
+::view-transition-old(root){
+    animation-name: slide-out;
+}
+
+::view-transition-new(root){
+    animation-name: slide-in; /* NOTE: still a bug, see below */
+}
+
+@keyframes slide-out{
+    to {
+        translate: -100vw;
+    }
+}
+
+@keyframes slide-in{
+    from{
+        translate: 100vw;
+    }
+}
+
+/* ADD: mobile breakpoint for the biggest layout risks */
+@media (max-width: 700px) {
+    .carousel-container {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 640 / 490;
+    }
+
+    .front_word, .shadow {
+        font-size: 10vw; /* scales better on narrow screens than 7.5vw */
+    }
+
+    .buttons {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .right {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
